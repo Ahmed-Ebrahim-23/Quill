@@ -5,9 +5,9 @@ import enum
 bcrypt = Bcrypt()
 
 class UserRole(enum.Enum):
-    MEMBER = "member"
-    LIBRARIAN = "librarian"
-    ADMIN = "admin"
+    member = "member"
+    librarian = "librarian"
+    admin = "admin"
 
     def __str__(self):
         return self.value
@@ -19,11 +19,11 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.Enum(UserRole), nullable=False, default=UserRole.MEMBER)
+    role = db.Column(db.Enum(UserRole, native_enum=False), nullable=False, default=UserRole.member)
 
     borrows = db.relationship('Borrow', backref='user', lazy=True)
 
-    def __init__(self, name, email, password, role='member'):
+    def __init__(self, name, email, password, role=UserRole.member):
         self.name = name
         self.email = email
         self.set_password(password)
@@ -40,7 +40,7 @@ class User(db.Model):
             'id': self.id,
             'name': self.name,
             'email': self.email,
-            'role': self.role
+            'role': str(self.role)
         }
 
     def __repr__(self):
