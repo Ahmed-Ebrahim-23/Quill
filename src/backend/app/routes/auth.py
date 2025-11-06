@@ -1,8 +1,7 @@
 from flask import Blueprint, request
-from flask_jwt_extended import create_access_token
 from ..common.api_response import jsend_success
-from ..services import user_service
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from ..services import user_service, auth_service
+from ..common.auth import role_required , get_current_user
 
 auth_bp = Blueprint('auth', __name__)
 
@@ -12,22 +11,12 @@ def login():
     data = request.get_json() or {}
     email = data.get('email')
     password = data.get('password')
-    if not email or not password:
-        raise ValueError('Email and password are required')
 
-    # Get user model directly from database
-    from ..models.user import User
-    user_model = User.query.filter_by(email=email).first()
-    if not user_model:
-        raise ValueError('Invalid credentials')
+    access_token, user_dict = auth_service.login_user(email, password)
 
-    if not user_model.check_password(password):
-        raise ValueError('Invalid credentials')
-
-    access_token = create_access_token(identity=user_model.id)
     return jsend_success({
         'access_token': access_token,
-        'user': user_model.to_dict()
+        'user': user_dict
     })
 
 
@@ -39,9 +28,24 @@ def register():
 
 
 @auth_bp.route('/me', methods=['GET'])
-@jwt_required()
 def me():
-    identity = get_jwt_identity()
-    print(identity)
-    user = user_service.get_user_by_id(identity)
-    return jsend_success(user)
+    current_user = get_current_user().to_dict()
+    return jsend_success(current_user)
+
+
+@role_required('admin')
+@auth_bp.route('/admin/create-librarian', methods=['POST'])
+def create_librarian():
+    data = request.get_json() or {}
+    data['role'] = 'librarian'  
+    new_user = user_service.create_new_user(data)
+    return jsend_success(new_user, status_code=201)
+
+
+@role_required('admin')
+@auth_bp.route('/admin/create-admin', methods=['POST'])
+def create_admin():
+    data = request.get_json() or {}
+    data['role'] = 'admin' 
+    new_user = user_service.create_new_user(data)
+    return jsend_success(new_user, status_code=201)

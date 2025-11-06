@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 from ..common.api_response import jsend_success
 from ..services import author_service
+from ..common.auth import role_required
 from werkzeug.exceptions import NotFound
 
 author_bp = Blueprint('authors', __name__)
@@ -19,6 +20,7 @@ def get_author(author_id):
     return jsend_success(author)
 
 
+@role_required('librarian', 'admin')
 @author_bp.route('/', methods=['POST'])
 def create_author():
     data = request.get_json()
@@ -26,6 +28,7 @@ def create_author():
     return jsend_success(new_author, status_code=201)
 
 
+@role_required('librarian', 'admin')
 @author_bp.route('/<int:author_id>', methods=['PUT'])
 def update_author(author_id):
     data = request.get_json()
@@ -35,6 +38,7 @@ def update_author(author_id):
     return jsend_success(updated_author)
 
 
+@role_required('librarian', 'admin')
 @author_bp.route('/<int:author_id>', methods=['DELETE'])
 def delete_author(author_id):
     result = author_service.delete_author_by_id(author_id)
