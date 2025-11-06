@@ -37,28 +37,34 @@
 ## 3. Functional Requirements
 
 ### General
-- Users can register, log in, and log out securely.
+- Users can register, log in, and log out securely using JWT-based authentication.
 - Each role (Member, Librarian, Admin) has its own dashboard and permissions.
+- Authentication tokens expire after 1 hour (configurable via JWT_ACCESS_TOKEN_EXPIRES).
 
 ### Book Management
-- Librarians can add, edit, or remove books from the system.
-- The system stores book details including title, author, category, ISBN, and availability.
+- Librarians can add, edit, or remove books from the system via REST API endpoints.
+- The system stores book details including title, author, category, ISBN, publication date, and availability status.
 - Book availability updates automatically when borrowed, returned, or reserved.
+- Google Books API integration allows importing book data automatically.
 
 ### Reservation & Borrowing
-- Members can reserve unavailable books and borrow available ones.
-- The system tracks due dates and sends reminders for upcoming or overdue returns.
-- Book availability updates automatically after borrowing or returning.
-- Notifications are sent to members for important updates.
+- Members can reserve unavailable books and borrow available ones through the web interface.
+- The system tracks due dates with a default borrowing period of 14 days (configurable via BORROWING_LIMIT_DAYS).
+- Book availability updates automatically after borrowing or returning operations.
+- Notification system sends alerts for important updates to members.
+- Borrow status tracked in PostgreSQL database with proper relationship constraints.
 
 ### User Management
-- Admins can add, update, or remove librarian and member accounts.
-- The system validates credentials before granting access to any user.
-- User information (borrowing history, status, etc.) is stored and retrievable.
+- Admins can add, update, or remove librarian and member accounts through admin interface.
+- The system validates credentials using bcrypt hashing before granting access.
+- User information including borrowing history, current status, and role assignments stored in database.
+- Role-based access control (RBAC) implemented for different user types.
+- User sessions managed via JWT tokens with secure HTTP-only cookies.
 
 ### Reports & Analytics
 - The system generates reports for:
-  - Borrowed and overdue books
-  - Most borrowed titles
-  - Member activity and usage statistics
-
+  - Borrowed and overdue books with detailed member information
+  - Most borrowed titles and category statistics
+  - Member activity and usage statistics including borrowing patterns
+  - System-wide statistics accessible via admin dashboard
+- Reports generated using SQLAlchemy queries with proper data aggregation.
