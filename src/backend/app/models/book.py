@@ -48,6 +48,8 @@ class Book(db.Model):
             'total_copies': self.total_copies,
             'available_copies': self.available_copies,
             'description': self.description,
+            'author_id': self.author_id,
+            'category_id': self.category_id,
             'author': self.author.name if self.author else None,
             'category': self.category.name if self.category else None
         }
