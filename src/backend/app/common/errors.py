@@ -1,9 +1,10 @@
 from flask import Blueprint
 from .api_response import jsend_error, jsend_fail
 from werkzeug.exceptions import HTTPException
-
+import logging
 errors_bp = Blueprint('errors', __name__)
 
+logger = logging.getLogger(__name__)
 
 @errors_bp.errorhandler(HTTPException)
 def handle_http_exception(e):
@@ -28,6 +29,8 @@ def handle_value_error(e):
 
 @errors_bp.errorhandler(Exception)
 def handle_generic_exception(e):
+    logger.error(f"Unhandled Exception during request: {str(e)}", exc_info=True)
+    
     return jsend_error("Internal Server Error", code=500, data={
         "description": str(e)
     }, status_code=500)

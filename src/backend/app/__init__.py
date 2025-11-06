@@ -25,9 +25,10 @@ def create_app(config_name=None):
     bcrypt.init_app(app)
     jwt.init_app(app)
     
+    # Register error handlers
+    register_error_handlers(app)
+    
     # Register blueprints
     register_blueprints(app)
 
-    # Register error handlers
-    register_error_handlers(app)
     return app
