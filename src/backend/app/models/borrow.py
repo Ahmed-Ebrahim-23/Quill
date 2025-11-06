@@ -6,9 +6,10 @@ class Borrow(db.Model):
     __tablename__ = 'borrows'
 
     id = db.Column(db.Integer, primary_key=True)
-    borrow_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    due_date = db.Column(db.DateTime, nullable=False)
-    return_date = db.Column(db.DateTime, nullable=True)
+
+    borrow_date = db.Column(db.DateTime(timezone=True), nullable=False)
+    due_date = db.Column(db.DateTime(timezone=True), nullable=False)
+    return_date = db.Column(db.DateTime(timezone=True), nullable=True)
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     book_isbn = db.Column(db.String(20), db.ForeignKey('books.isbn'), nullable=False)
@@ -46,7 +47,7 @@ class Borrow(db.Model):
             'user_id': self.user_id,
             'book_isbn': self.book_isbn,
             'book_title': self.book.title if self.book else None,
-            'user_name': self.user.name if self.user else None
+            'member_name': self.user.name if self.user else None
         }
 
     def __repr__(self):
