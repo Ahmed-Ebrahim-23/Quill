@@ -21,6 +21,9 @@ Quill is a library management system designed to streamline the operations of li
     - [Borrows](#borrows)
     - [Users](#users)
     - [Authors \& Categories](#authors--categories)
+- [References](#references)
+  - [For Front-end](#for-front-end)
+  - [For Back-end](#for-back-end)
 
 ---
 
@@ -199,3 +202,19 @@ quill-library-management/
 ---
 
 **Note**: Default configuration uses a 14-day borrowing period and JWT tokens that expire after 1 hour. These settings can be configured through environment variables as documented in the configuration files.
+
+# References
+These resources were helpful in building this project:
+## For Front-end
+- https://github.com/vinitshahdeo/Library-Management-System/blob/master/screenshots/
+- https://hardcover.app/
+  
+## For Back-end
+- https://www.geeksforgeeks.org/software-engineering/library-management-system/
+- https://youtu.be/z3YMz-Gocmw?si=B7HTiXP51sH7SKbe
+- https://flask.palletsprojects.com/en/stable/errorhandling/
+- https://developers.google.com/books/docs/v1/using
+- https://en.wikipedia.org/wiki/ISBN
+- https://docs.sqlalchemy.org/en/20/intro.html
+- https://www.digitalocean.com/community/tutorials/how-to-use-a-postgresql-database-in-a-flask-application
+- https://github.com/omniti-labs/jsend
