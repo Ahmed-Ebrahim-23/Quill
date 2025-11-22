@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # PostgreSQL Database
   database:
@@ -26,7 +28,7 @@ services:
       dockerfile: Dockerfile.backend
     container_name: quill_backend
     environment:
-      - DEBUG=false
+      - DEBUG=true
       - DATABASE_URL=postgresql://quill_user:quill_password@database:5432/quill_library
       - JWT_SECRET_KEY=your-super-secret-jwt-key-change-this-in-production
       - JWT_ACCESS_TOKEN_EXPIRES=3600
@@ -41,10 +43,13 @@ services:
       - quill_network
     volumes:
       - ./src/backend:/app
+  
     command: >
       sh -c "
         echo 'Waiting for database...' &&
         sleep 5 &&
+        if [ ! -d 'migrations' ]; then flask db init; fi &&
+        flask db migrate -m 'Initial migration' || true &&
         flask db upgrade &&
         python seed_database.py &&
         flask run --host=0.0.0.0 --port=5000
@@ -66,8 +71,9 @@ services:
       - quill_network
     volumes:
       - ./src/frontend:/app
+      - /app/node_modules  
 
-  # Database Seed Service (runs once to seed initial data)
+  # Database Seed Service (Optional - runs manually if needed)
   seed:
     build:
       context: .
@@ -77,9 +83,6 @@ services:
       - DEBUG=false
       - DATABASE_URL=postgresql://quill_user:quill_password@database:5432/quill_library
       - JWT_SECRET_KEY=your-super-secret-jwt-key-change-this-in-production
-      - JWT_ACCESS_TOKEN_EXPIRES=3600
-      - JWT_REFRESH_TOKEN_EXPIRES=86400
-      - BORROWING_LIMIT_DAYS=14
     depends_on:
       database:
         condition: service_healthy
