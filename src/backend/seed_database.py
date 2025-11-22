@@ -125,7 +125,7 @@ def seed_database():
                 # Science Fiction
                 Book('978-0-553-29337-9', 'Foundation', 7, 3, 2, 'https://covers.openlibrary.org/b/id/8093264-L.jpg',
                      'A science fiction novel about the fall of the Galactic Empire and the establishment of the Foundation.'),
-                Book('978-0-7432-7356-5', 'Fahrenheit 451', 8, 3, 3, 'https://covers.openlibrary.org/b/id/8226571-L.jpg',
+                Book('978-1-4516-7331-9', 'Fahrenheit 451', 8, 3, 3, 'https://covers.openlibrary.org/b/id/8226571-L.jpg',
                      'A dystopian novel about a future American society where books are outlawed and burned.'),
                 
                 # Mystery
@@ -149,7 +149,7 @@ def seed_database():
                      'A novella about Ebenezer Scrooge\'s journey of redemption and the spirit of Christmas.'),
                 
                 # Additional popular books
-                Book('978-0-06-112008-4', 'Adventures of Huckleberry Finn', 10, 1, 2, 'https://covers.openlibrary.org/b/id/8226193-L.jpg',
+                Book('978-0-486-28061-5', 'Adventures of Huckleberry Finn', 10, 1, 2, 'https://covers.openlibrary.org/b/id/8226193-L.jpg',
                      'A novel about Huck Finn\'s adventures on the Mississippi River with Jim, a runaway slave.'),
                 Book('978-0-439-70819-5', 'Harry Potter and the Chamber of Secrets', 3, 6, 3, 'https://covers.openlibrary.org/b/id/7977657-L.jpg',
                      'Harry\'s second year at Hogwarts involves a mysterious chamber and its deadly occupant.'),
