@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, current_app
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from ..common.api_response import jsend_success
 from ..common.auth import role_required
@@ -23,14 +23,15 @@ def get_borrow(borrow_id):
     return jsend_success(borrow)
 
 
-@role_required('member')
 @borrow_bp.route('/', methods=['POST'])
 @jwt_required()
+@role_required('member')
 def create_borrow():
     data = request.get_json()
-
+    
     identity = get_jwt_identity()
-
+    current_app.logger.warning("Current user identity: %s", identity)
+    print(identity)
     user_id = data.get('user_id') or identity
     book_isbn = data.get('book_isbn')
 
